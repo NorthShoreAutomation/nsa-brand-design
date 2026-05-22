@@ -13,7 +13,7 @@ VERSION="$(cat VERSION)"
 #    - New banner with version
 #    - Google Fonts @import (IBM Plex)
 #    - tokens.css with Microgramma paths rewritten from `fonts/` to `../fonts/`
-#      (jsDelivr resolves these within the same release tag)
+#      (resolves against the sibling fonts/ directory under whichever host serves the CSS)
 #    - components.css unmodified
 {
   cat <<EOF
