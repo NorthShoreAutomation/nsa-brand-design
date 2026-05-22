@@ -1,8 +1,37 @@
-# NSA Design System — CLAUDE.md snippet
+# NSA Design System — CLAUDE.md snippets
 
-Paste the section below into the `CLAUDE.md` of any project where you want Claude to follow the NSA design system when generating HTML.
+Two snippets, one design system. Pick the one that matches the surface you're generating:
+
+- **Internal** — working docs (plans, reports, status updates, scratch HTML). Light contract: get the look without ceremony.
+- **External** — customer-facing surfaces (product UI, marketing pages, anything shipped under the NSA brand). Full contract: headlines, voice, gradient discipline, product theming.
+
+Both load the same `dist/nsa.css`. The difference is which rules Claude is held to when generating against it.
 
 ---
+
+## Internal — paste into `CLAUDE.md` for working docs
+
+## NSA Design System (internal docs)
+
+For internal working docs (plans, reports, scratch HTML), include the NSA stylesheet so the doc inherits the system without ceremony:
+
+```html
+<link rel="stylesheet" href="https://northshoreautomation.github.io/nsa-brand-design/dist/nsa.css">
+```
+
+That's enough — body, type, and color come in automatically. When you need more:
+
+- **Color.** Use tokens, never raw hex. Body is `var(--bg)`; text is `var(--text)`; accent is `var(--nsa-signal)`.
+- **Space.** Use the `--s-1`…`--s-20` scale for padding/margin. No arbitrary px.
+- **Components.** Reach for `.card`, `.badge`, `.table`, `.btn`, `.ds-shell`/`.ds-side`/`.ds-main` before writing custom CSS.
+
+Headlines, voice, product theming, and gradient rules don't apply here — write how you write. This is not client facing and not branded marketing. Internal use only.
+
+Full reference: <https://github.com/NorthShoreAutomation/nsa-brand-design>
+
+---
+
+## External — paste into `CLAUDE.md` for customer-facing surfaces
 
 ## NSA Design System
 
