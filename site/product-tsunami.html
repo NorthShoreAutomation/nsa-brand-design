@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en" data-product="tsunami"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Tsunami — NSA</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../tokens.css"/><link rel="stylesheet" href="../components.css"/>
+<style>
+.app { border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; background: var(--bg); display: grid; grid-template-columns: 240px 1fr 320px; min-height: 720px; }
+.app-side { background: var(--bg-sunken); border-right: 1px solid var(--border-subtle); padding: 18px; }
+.app-side .brand { font-family: var(--font-display); font-weight: 700; font-size: 20px; letter-spacing: -0.02em; display:flex; align-items:center; gap:8px; margin-bottom: 18px; }
+.app-side .brand::before { content:""; width: 10px; height: 10px; background: var(--tsunami); border-radius: 50%; }
+.app-side nav a { display:flex; gap:8px; padding: 8px 10px; border-radius: 6px; font-size: 13px; color: var(--text-muted); margin-bottom: 2px; }
+.app-side nav a.on { background: var(--accent-soft); color: var(--accent); }
+.app-main { padding: 22px 26px; }
+.chat { border-left: 1px solid var(--border-subtle); padding: 20px; display:flex; flex-direction:column; }
+.chat h4 { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--text-faint); margin: 0 0 14px; }
+.msg { padding: 12px 14px; border-radius: 10px; font-size: 13px; margin-bottom: 10px; line-height: 1.5; }
+.msg.u { background: var(--surface); color: var(--text); align-self: flex-end; }
+.msg.a { background: var(--accent-soft); color: var(--text); border-left: 2px solid var(--accent); }
+.msg .cite { display:inline-flex; align-items:center; gap:4px; font-family: var(--font-mono); font-size: 10px; padding: 2px 6px; background: var(--bg); border-radius: 4px; margin: 0 2px; color: var(--accent); }
+.chat .inp { margin-top: auto; display:flex; gap:8px; padding: 10px; background: var(--bg-sunken); border: 1px solid var(--border); border-radius: 8px; font-size: 13px; color: var(--text-faint); }
+.kpis { display:grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 18px; }
+.kpi { padding: 14px; background: var(--bg-sunken); border: 1px solid var(--border-subtle); border-radius: 8px; }
+.kpi .k { font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--text-faint); }
+.kpi .v { font-family: var(--font-display); font-size: 28px; font-weight: 700; letter-spacing: -0.02em; margin-top: 4px; }
+.kpi .d { font-size: 11px; color: var(--ok); }
+.themes { display:grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+.theme { padding: 12px 14px; background: var(--bg-sunken); border: 1px solid var(--border-subtle); border-radius: 8px; display:flex; justify-content:space-between; align-items:center; font-size: 13px; }
+.theme .bar { flex: 1; margin: 0 12px; height: 4px; background: var(--bg); border-radius: 2px; overflow: hidden; }
+.theme .bar > div { height: 100%; background: var(--tsunami); }
+.theme .c { font-family: var(--font-mono); font-size: 11px; color: var(--text-faint); }
+</style></head>
+<body>
+<div class="ds-shell">
+  <aside class="ds-side" data-ds-side data-current="tsunami"></aside>
+  <main class="ds-main">
+    <div class="ds-eyebrow" style="color:var(--tsunami)">Product · Tsunami · AI Media Platform</div>
+    <h1 class="ds-h1">Tsunami.</h1>
+    <p class="ds-lede">AI-powered media intelligence — transcripts, themes, and a grounded chat that actually knows your library. Electric blue accent over deep ink.</p>
+    <div class="row" style="margin:var(--s-5) 0"><span class="ribbon"><span class="dot"></span>Tsunami</span><span class="badge">Accent · #36A3FF</span><span class="badge">Assistant-first</span><span class="badge">tRPC · Next 15</span></div>
+
+    <h2 class="ds-h2">Dashboard + Media Assistant</h2>
+    <div class="app">
+      <aside class="app-side">
+        <div class="brand">Tsunami</div>
+        <nav>
+          <a class="on">◨ Overview</a>
+          <a>☰ Library</a>
+          <a>⌕ Search</a>
+          <a>∵ Themes</a>
+          <a>◎ Jobs</a>
+          <a>⚙ Settings</a>
+        </nav>
+      </aside>
+      <section class="app-main">
+        <div class="kpis">
+          <div class="kpi"><div class="k">Assets</div><div class="v">24,802</div><div class="d">+312 today</div></div>
+          <div class="kpi"><div class="k">Hours indexed</div><div class="v">1,284</div><div class="d">+18.2h</div></div>
+          <div class="kpi"><div class="k">Transcribed</div><div class="v">98.4%</div><div class="d" style="color:var(--warn)">14 pending</div></div>
+          <div class="kpi"><div class="k">Queries / wk</div><div class="v">3,901</div><div class="d">+22%</div></div>
+        </div>
+        <div class="row-between"><h3 class="ds-h3" style="margin:0">Library themes</h3><span class="badge">Last 30d</span></div>
+        <div class="themes">
+          <div class="theme"><span>Behind the scenes</span><div class="bar"><div style="width:88%"></div></div><span class="c">2,412</span></div>
+          <div class="theme"><span>Executive interviews</span><div class="bar"><div style="width:72%"></div></div><span class="c">1,984</span></div>
+          <div class="theme"><span>Product demos</span><div class="bar"><div style="width:54%"></div></div><span class="c">1,488</span></div>
+          <div class="theme"><span>Field coverage</span><div class="bar"><div style="width:41%"></div></div><span class="c">1,125</span></div>
+          <div class="theme"><span>Archival / historical</span><div class="bar"><div style="width:28%"></div></div><span class="c">769</span></div>
+          <div class="theme"><span>Partner co-marketing</span><div class="bar"><div style="width:18%"></div></div><span class="c">502</span></div>
+        </div>
+      </section>
+      <aside class="chat">
+        <h4>Media Assistant</h4>
+        <div class="msg u">What are our top 3 themes in Q1 interviews?</div>
+        <div class="msg a">The three strongest themes across Q1 interviews are <b>autonomy in ops</b>, <b>AI for media workflows</b>, and <b>on-prem vs. cloud tradeoffs</b>. <span class="cite">S05E12 · 04:12</span><span class="cite">pilot_coldopen · 01:44</span></div>
+        <div class="msg u">Find the clip where the CTO talks about on-prem.</div>
+        <div class="msg a">Here: <span class="cite">S04E03 · 18:22</span> — 42 seconds. Want me to open it in the player?</div>
+        <div class="inp"><span>⌨</span><span>Ask the library…</span></div>
+      </aside>
+    </div>
+  </main>
+</div>
+<script src="../sidebar.js"></script>
+</body></html>

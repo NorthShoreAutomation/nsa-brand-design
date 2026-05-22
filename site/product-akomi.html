@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en" data-product="akomi"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Akomi — NSA</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../tokens.css"/><link rel="stylesheet" href="../components.css"/>
+<style>
+.app { border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; background: var(--bg); display: grid; grid-template-columns: 220px 1fr; min-height: 720px; }
+.app-side { background: var(--bg-sunken); border-right: 1px solid var(--border-subtle); padding: 18px; }
+.app-side .brand { font-family: var(--font-display); font-weight: 700; font-size: 20px; letter-spacing: -0.02em; display:flex; align-items:center; gap: 8px; margin-bottom: 18px; }
+.app-side .brand::before { content:""; width: 10px; height: 10px; background: var(--akomi); border-radius: 50%; display:inline-block; }
+.app-side nav a { display:flex; gap: 8px; padding: 8px 10px; border-radius: 6px; font-size: 13px; color: var(--text-muted); margin-bottom: 2px; }
+.app-side nav a.on { background: var(--accent-soft); color: var(--accent); }
+.app-main { padding: 22px 26px; }
+.app-top { display:flex; align-items:center; gap: 12px; margin-bottom: 20px; }
+.app-top .search { flex:1; display:flex; align-items:center; gap:10px; padding: 8px 12px; background: var(--bg-sunken); border: 1px solid var(--border-subtle); border-radius: 6px; color: var(--text-faint); font-size: 13px; }
+.filter-row { display:flex; gap: 8px; margin-bottom: 16px; }
+.filter { padding: 6px 10px; background: var(--surface); border: 1px solid var(--border-subtle); border-radius: var(--r-pill); font-size: 12px; color: var(--text-muted); }
+.filter.on { background: var(--accent-soft); color: var(--accent); border-color: transparent; }
+.gallery { display:grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.tile { border: 1px solid var(--border-subtle); border-radius: var(--r-md); overflow: hidden; background: var(--surface); }
+.tile .thumb { aspect-ratio: 16/9; background: linear-gradient(135deg, #3b2a5c, #1a1128); position: relative; }
+.tile .dur { position:absolute; bottom:6px; right:6px; font-family:var(--font-mono); font-size: 10px; background: rgba(0,0,0,.7); padding: 2px 5px; border-radius: 3px; }
+.tile .meta { padding: 10px 12px; }
+.tile .name { font-size: 13px; font-weight: 600; }
+.tile .sub { font-family: var(--font-mono); font-size: 10px; color: var(--text-faint); margin-top:2px; }
+.tile:nth-child(2) .thumb { background: linear-gradient(135deg, #1c2d4a, #0e1626); }
+.tile:nth-child(3) .thumb { background: linear-gradient(135deg, #2a3d2c, #14251b); }
+.tile:nth-child(4) .thumb { background: linear-gradient(135deg, #4a2a2a, #251212); }
+.tile:nth-child(5) .thumb { background: linear-gradient(135deg, #2a2a4a, #121225); }
+.tile:nth-child(6) .thumb { background: linear-gradient(135deg, #4a3a2a, #251a12); }
+.tile:nth-child(7) .thumb { background: linear-gradient(135deg, #2a4a4a, #122525); }
+.tile:nth-child(8) .thumb { background: linear-gradient(135deg, #3a2a4a, #1a1225); }
+</style></head>
+<body>
+<div class="ds-shell">
+  <aside class="ds-side" data-ds-side data-current="akomi"></aside>
+  <main class="ds-main">
+    <div class="ds-eyebrow" style="color:var(--akomi)">Product · Akomi · Light DAM</div>
+    <h1 class="ds-h1" style="font-family:var(--font-display);font-style:italic;text-transform:uppercase;letter-spacing:.02em"><em>Akomi.</em></h1>
+    <p class="ds-lede">Light, fast digital asset management. The Akomi violet is the loudest accent in the NSA family — saved for hero moments, search highlights, and the moments that need to feel <em>found</em>.</p>
+    <div class="row" style="margin:var(--s-5) 0"><span class="ribbon"><span class="dot"></span>Akomi</span><span class="badge">Brand · #8F38FA</span><span class="badge">Microgramma + IBM Plex Sans</span><span class="badge">Dark-first</span></div>
+
+    <h2 class="ds-h2">Brand ramp</h2>
+    <p class="ds-note">The full Akomi violet at hero scale. A bright tint for highlights. A deep variant for pressed states. A desaturated tint for text-on-dark. A 16% alpha for soft fills, badges, and selection.</p>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:var(--s-4)">
+      <div class="accent" style="border-radius:var(--r-md);border:1px solid var(--border-subtle);overflow:hidden">
+        <div style="height:120px;background:var(--akomi);display:flex;align-items:flex-end;padding:14px;color:#fff;font-weight:600">Akomi</div>
+        <div style="padding:12px 14px;background:var(--surface);font-size:12px;display:flex;justify-content:space-between"><span>--akomi</span><span class="mono" style="color:var(--text-faint)">#8F38FA</span></div>
+      </div>
+      <div class="accent" style="border-radius:var(--r-md);border:1px solid var(--border-subtle);overflow:hidden">
+        <div style="height:120px;background:var(--akomi-bright);display:flex;align-items:flex-end;padding:14px;color:#1a0a2e;font-weight:600">Bright</div>
+        <div style="padding:12px 14px;background:var(--surface);font-size:12px;display:flex;justify-content:space-between"><span>--akomi-bright</span><span class="mono" style="color:var(--text-faint)">#A55FFC</span></div>
+      </div>
+      <div class="accent" style="border-radius:var(--r-md);border:1px solid var(--border-subtle);overflow:hidden">
+        <div style="height:120px;background:var(--akomi-2);display:flex;align-items:flex-end;padding:14px;color:#fff;font-weight:600">Deep</div>
+        <div style="padding:12px 14px;background:var(--surface);font-size:12px;display:flex;justify-content:space-between"><span>--akomi-2</span><span class="mono" style="color:var(--text-faint)">#6B1FD9</span></div>
+      </div>
+      <div class="accent" style="border-radius:var(--r-md);border:1px solid var(--border-subtle);overflow:hidden">
+        <div style="height:120px;background:var(--akomi-tint);display:flex;align-items:flex-end;padding:14px;color:#1a0a2e;font-weight:600">Tint</div>
+        <div style="padding:12px 14px;background:var(--surface);font-size:12px;display:flex;justify-content:space-between"><span>--akomi-tint</span><span class="mono" style="color:var(--text-faint)">#C7A8FF</span></div>
+      </div>
+      <div class="accent" style="border-radius:var(--r-md);border:1px solid var(--border-subtle);overflow:hidden">
+        <div style="height:120px;background:var(--akomi-soft);display:flex;align-items:flex-end;padding:14px;color:var(--akomi-tint);font-weight:600;border-bottom:1px solid var(--border-subtle)">Soft</div>
+        <div style="padding:12px 14px;background:var(--surface);font-size:12px;display:flex;justify-content:space-between"><span>--akomi-soft</span><span class="mono" style="color:var(--text-faint)">rgba/16%</span></div>
+      </div>
+    </div>
+
+    <h2 class="ds-h2">Library view</h2>
+    <div class="app">
+      <aside class="app-side">
+        <div class="brand">Akomi</div>
+        <nav>
+          <a class="on">◨ Library</a>
+          <a>☰ Collections</a>
+          <a>⇡ Upload</a>
+          <a>◎ Jobs</a>
+          <a>⚙ Admin</a>
+        </nav>
+      </aside>
+      <section class="app-main">
+        <div class="app-top">
+          <div class="search"><span>⌕</span><span>Search "interview color 4k"…</span></div>
+          <button class="btn btn-primary btn-sm">Upload</button>
+          <span class="avatar" style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--akomi),var(--akomi-2));display:inline-block"></span>
+        </div>
+        <div class="filter-row">
+          <span class="filter on">All · 1,284</span>
+          <span class="filter">Video · 612</span>
+          <span class="filter">Audio · 208</span>
+          <span class="filter">Image · 441</span>
+          <span class="filter">Docs · 23</span>
+        </div>
+        <div class="gallery">
+          <div class="tile"><div class="thumb"><span class="dur">12:04</span></div><div class="meta"><div class="name">S05E12_interview_raw</div><div class="sub">mp4 · 3840×2160 · 1.2 GB</div></div></div>
+          <div class="tile"><div class="thumb"><span class="dur">04:18</span></div><div class="meta"><div class="name">pilot_cold_open</div><div class="sub">mov · 1920×1080 · 340 MB</div></div></div>
+          <div class="tile"><div class="thumb"><span class="dur">00:46</span></div><div class="meta"><div class="name">b-roll_coast_a</div><div class="sub">mp4 · 3840×2160 · 180 MB</div></div></div>
+          <div class="tile"><div class="thumb"><span class="dur">38:01</span></div><div class="meta"><div class="name">field_audio_mix</div><div class="sub">wav · stereo · 420 MB</div></div></div>
+          <div class="tile"><div class="thumb"></div><div class="meta"><div class="name">still_set_01</div><div class="sub">jpg · 6000×4000 · 14 MB</div></div></div>
+          <div class="tile"><div class="thumb"><span class="dur">02:12</span></div><div class="meta"><div class="name">promo_cut_v3</div><div class="sub">mp4 · 1920×1080 · 92 MB</div></div></div>
+          <div class="tile"><div class="thumb"></div><div class="meta"><div class="name">thumbnail_keyart</div><div class="sub">png · 2048×1152 · 4.2 MB</div></div></div>
+          <div class="tile"><div class="thumb"><span class="dur">01:30</span></div><div class="meta"><div class="name">teaser_social</div><div class="sub">mp4 · 1080×1080 · 38 MB</div></div></div>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+<script src="../sidebar.js"></script>
+</body></html>

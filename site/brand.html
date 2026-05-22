@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Brand &amp; Logo — NSA</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../tokens.css"/><link rel="stylesheet" href="../components.css"/>
+<style>
+.logo-hero { background: var(--nsa-ink); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 80px; display:flex; align-items:center; justify-content:center; min-height: 280px; }
+.logo-hero img { height: 120px; width: auto; }
+.logo-variants { display: grid; grid-template-columns: repeat(3,1fr); gap: var(--s-4); }
+.logo-variant { border-radius: var(--r-md); overflow: hidden; border: 1px solid var(--border-subtle); }
+.logo-variant .well { display: flex; align-items:center; justify-content:center; height: 180px; }
+.logo-variant .w-ink { background: var(--nsa-ink); }
+.logo-variant .w-light { background: var(--nsa-snow); }
+.logo-variant .w-signal { background: linear-gradient(135deg, var(--nsa-signal-3), var(--nsa-signal)); }
+.logo-variant img { height: 56px; }
+.logo-variant .w-light img { filter: invert(1) hue-rotate(180deg); }
+.logo-variant .label { padding: 10px 14px; background: var(--surface); font-size: 12px; color: var(--text-muted); display:flex; justify-content:space-between; }
+.clearspace { background: var(--nsa-ink); border-radius: var(--r-lg); padding: 40px; display:flex; align-items:center; justify-content:center; border: 1px solid var(--border); position: relative; }
+.clearspace-box { position: relative; padding: 40px; border: 1px dashed rgba(94,161,255,.4); border-radius: 6px; }
+.clearspace-box::before, .clearspace-box::after { content: "x"; position: absolute; color: var(--nsa-signal); font-family: var(--font-mono); font-size: 10px; }
+.clearspace-box::before { top: -18px; left: 50%; transform: translateX(-50%); }
+.clearspace-box::after { bottom: -18px; left: 50%; transform: translateX(-50%); }
+.clearspace-box img { height: 80px; }
+.donts { display: grid; grid-template-columns: repeat(4,1fr); gap: var(--s-3); }
+.dont { border: 1px solid var(--border-subtle); border-radius: var(--r-md); overflow: hidden; background: var(--surface); }
+.dont .vis { height: 120px; background: var(--nsa-ink); display:flex; align-items:center; justify-content:center; }
+.dont .vis img { height: 40px; }
+.dont .cap { padding: 10px 12px; font-size: 12px; color: var(--text-muted); border-top: 1px solid var(--border-subtle); }
+.dont .x { color: var(--err); font-family: var(--font-mono); margin-right: 6px; }
+.voice-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-4); }
+.voice-col h4 { margin: 0 0 10px; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; }
+.voice-col.yes h4 { color: var(--ok); }
+.voice-col.no h4 { color: var(--err); }
+.voice-col ul { margin: 0; padding: 0; list-style: none; }
+.voice-col li { padding: 12px 0; border-bottom: 1px solid var(--border-subtle); font-size: 14px; color: var(--text-muted); }
+.voice-col li::before { content: "“"; color: var(--text-faint); margin-right: 4px; }
+.voice-col li::after { content: "”"; color: var(--text-faint); }
+</style></head>
+<body>
+<div class="ds-shell">
+  <aside class="ds-side" data-ds-side data-current="brand"></aside>
+  <main class="ds-main">
+    <div class="ds-eyebrow">Foundation · F.01</div>
+    <h1 class="ds-h1">Brand &amp; Logo.</h1>
+    <p class="ds-lede">The NSA mark is a italic, engineered wordmark under a single sweeping arc — a signal crossing the skyline. Treat it with confidence and quiet; never over-ornament.</p>
+
+    <h2 class="ds-h2">The Mark</h2>
+    <div class="logo-hero"><img src="../assets/nsa-logo-white.png" alt="North Shore Automation"/></div>
+
+    <h2 class="ds-h2">Lockups</h2>
+    <div class="logo-variants">
+      <div class="logo-variant"><div class="well w-ink"><img src="../assets/nsa-logo-white.png"/></div><div class="label"><span>Primary · on ink</span><span class="mono">#0B1220</span></div></div>
+      <div class="logo-variant"><div class="well w-light"><img src="../assets/nsa-logo-white.png"/></div><div class="label"><span>Reverse · on light</span><span class="mono">#EEF2F9</span></div></div>
+      <div class="logo-variant"><div class="well w-signal"><img src="../assets/nsa-logo-white.png"/></div><div class="label"><span>Signal wash</span><span class="mono">#2E7BE8</span></div></div>
+    </div>
+
+    <h2 class="ds-h2">Clearspace</h2>
+    <p class="ds-note">Minimum clearspace equals the <code class="inline">x-height</code> of the N. Nothing crops into the arc.</p>
+    <div class="clearspace"><div class="clearspace-box"><img src="../assets/nsa-logo-white.png"/></div></div>
+
+    <h2 class="ds-h2">Don't</h2>
+    <div class="donts">
+      <div class="dont"><div class="vis"><img src="../assets/nsa-logo-white.png" style="transform:rotate(-8deg)"/></div><div class="cap"><span class="x">✕</span>Don't rotate or tilt.</div></div>
+      <div class="dont"><div class="vis" style="background:linear-gradient(90deg,#ff00aa,#00ffcc)"><img src="../assets/nsa-logo-white.png"/></div><div class="cap"><span class="x">✕</span>Don't place on clashing gradients.</div></div>
+      <div class="dont"><div class="vis"><img src="../assets/nsa-logo-white.png" style="transform:scaleY(1.6)"/></div><div class="cap"><span class="x">✕</span>Don't distort the aspect ratio.</div></div>
+      <div class="dont"><div class="vis"><img src="../assets/nsa-logo-white.png" style="filter:drop-shadow(0 0 12px #ff0);opacity:.8"/></div><div class="cap"><span class="x">✕</span>Don't add glows, shadows, or outlines.</div></div>
+    </div>
+
+    <h2 class="ds-h2">Voice</h2>
+    <p class="ds-note">We talk like senior engineers with design sensibility. Specific. Calm. Zero fluff. No cheerful enterprise exclamation points.</p>
+    <div class="voice-grid" style="margin-top: var(--s-5);">
+      <div class="voice-col yes">
+        <h4>We sound like</h4>
+        <ul>
+          <li>Watches 12 folders. Moved 4,382 files this week.</li>
+          <li>Search your library like you'd search a conversation.</li>
+          <li>One binary. Drop it on a host. Done.</li>
+          <li>Transcripts that know what they're talking about.</li>
+        </ul>
+      </div>
+      <div class="voice-col no">
+        <h4>We don't sound like</h4>
+        <ul>
+          <li>Unlock next-gen AI-powered media experiences!</li>
+          <li>Revolutionize your workflow with seamless synergy.</li>
+          <li>Our enterprise-grade platform empowers creators.</li>
+          <li>Supercharge your team today. ✨</li>
+        </ul>
+      </div>
+    </div>
+  </main>
+</div>
+<script src="../sidebar.js"></script>
+</body></html>

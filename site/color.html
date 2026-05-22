@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Color — NSA</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../tokens.css"/><link rel="stylesheet" href="../components.css"/>
+<style>
+.ramp { display:grid; grid-template-columns: repeat(12,1fr); gap:1px; border-radius: var(--r-md); overflow:hidden; border:1px solid var(--border-subtle); }
+.ramp .step { height: 64px; display:flex; align-items:flex-end; justify-content:flex-start; padding: 6px 8px; font-family: var(--font-mono); font-size: 10px; color: rgba(255,255,255,.55); }
+.ramp .step.light { color: rgba(0,0,0,.6); }
+.ramp-meta { display:flex; justify-content:space-between; font-size: 11px; color: var(--text-faint); margin: 6px 2px 24px; font-family: var(--font-mono); letter-spacing: .04em; }
+.accent-row { display:grid; grid-template-columns: repeat(4, 1fr); gap: var(--s-3); }
+.accent { border-radius: var(--r-md); border: 1px solid var(--border-subtle); overflow: hidden; }
+.accent .band { height: 100px; display:flex; align-items:flex-end; padding: 14px; font-weight:600; color: #071022; }
+.accent .meta { padding: 12px 14px; background: var(--surface); font-size: 12px; display:flex; justify-content:space-between; }
+.accent .meta .mono { color: var(--text-faint); }
+.status-row { display:grid; grid-template-columns: repeat(4,1fr); gap:var(--s-3); }
+.status-card { padding: 16px; border-radius: var(--r-md); border: 1px solid var(--border-subtle); background: var(--surface); }
+.status-card .sig { display:flex; align-items:center; gap:10px; font-size:13px; font-weight:600; }
+.status-card .sig .chip { width: 10px; height: 10px; border-radius: 50%; }
+.status-card .ex { margin-top: 12px; font-size: 12px; color: var(--text-dim); }
+.status-card .sample { margin-top: 10px; padding: 10px 12px; border-radius: var(--r-sm); font-size: 12px; }
+.product-cards { display:grid; grid-template-columns: repeat(3,1fr); gap: var(--s-4); }
+.pcard { border-radius: var(--r-lg); border: 1px solid var(--border-subtle); overflow: hidden; }
+.pcard .head { padding: 22px; color: #071022; font-family: var(--font-display); font-size: 24px; font-weight: 700; letter-spacing: -0.02em; }
+.pcard .body { padding: 18px; background: var(--surface); display:flex; flex-direction:column; gap: 10px; }
+.pcard .tok { display:flex; justify-content:space-between; font-family: var(--font-mono); font-size:11px; color: var(--text-muted); }
+</style></head>
+<body>
+<div class="ds-shell">
+  <aside class="ds-side" data-ds-side data-current="color"></aside>
+  <main class="ds-main">
+    <div class="ds-eyebrow">Foundation · F.02</div>
+    <h1 class="ds-h1">Color.</h1>
+    <p class="ds-lede">A near-black navy holds the stage. Signal blue carries every call-to-action. Three product accents add dialect without fragmenting the family.</p>
+
+    <h2 class="ds-h2">Neutral ramp</h2>
+    <p class="ds-note">12 steps from near-black to white. <code class="inline">--n-50</code> is the canonical body background.</p>
+    <div class="ramp">
+      <div class="step" style="background:var(--n-0)">0</div>
+      <div class="step" style="background:var(--n-50)">50</div>
+      <div class="step" style="background:var(--n-100)">100</div>
+      <div class="step" style="background:var(--n-150)">150</div>
+      <div class="step" style="background:var(--n-200)">200</div>
+      <div class="step" style="background:var(--n-300)">300</div>
+      <div class="step" style="background:var(--n-400)">400</div>
+      <div class="step" style="background:var(--n-500)">500</div>
+      <div class="step light" style="background:var(--n-600)">600</div>
+      <div class="step light" style="background:var(--n-700)">700</div>
+      <div class="step light" style="background:var(--n-800)">800</div>
+      <div class="step light" style="background:var(--n-950)">950</div>
+    </div>
+    <div class="ramp-meta"><span>#05080F</span><span>#F1F4FA</span></div>
+
+    <h2 class="ds-h2">Brand accent — Signal</h2>
+    <p class="ds-note">One accent. Used for CTAs, focus, selection, and navigation highlights across every NSA product.</p>
+    <div class="accent-row" style="margin-top:var(--s-4)">
+      <div class="accent"><div class="band" style="background:var(--nsa-signal)">Signal</div><div class="meta"><span>--nsa-signal</span><span class="mono">#5EA1FF</span></div></div>
+      <div class="accent"><div class="band" style="background:var(--nsa-signal-2)">Signal 2</div><div class="meta"><span>--nsa-signal-2</span><span class="mono">#2E7BE8</span></div></div>
+      <div class="accent"><div class="band" style="background:var(--nsa-signal-3);color:#fff">Signal 3</div><div class="meta"><span>--nsa-signal-3</span><span class="mono">#1A56B8</span></div></div>
+      <div class="accent"><div class="band" style="background:var(--nsa-ink);color:#fff">Ink</div><div class="meta"><span>--nsa-ink</span><span class="mono">#0B1220</span></div></div>
+    </div>
+
+    <h2 class="ds-h2">Product accents</h2>
+    <p class="ds-note">Each product gets one expressive accent for headers, charts, and key moments. Shared neutrals do the rest.</p>
+    <div class="product-cards" style="margin-top:var(--s-4)">
+      <div class="pcard"><div class="head" style="background:var(--akomi)">Akomi</div><div class="body"><div class="tok"><span>--akomi</span><span>#B6A6FF</span></div><div class="tok"><span>--akomi-2</span><span>#7D62FF</span></div><div class="tok"><span>soft</span><span>rgba(182,166,255,.14)</span></div></div></div>
+      <div class="pcard"><div class="head" style="background:var(--tsunami)">Tsunami</div><div class="body"><div class="tok"><span>--tsunami</span><span>#36A3FF</span></div><div class="tok"><span>--tsunami-2</span><span>#0E7BE0</span></div><div class="tok"><span>soft</span><span>rgba(54,163,255,.14)</span></div></div></div>
+      <div class="pcard"><div class="head" style="background:var(--watcher)">Watcher</div><div class="body"><div class="tok"><span>--watcher</span><span>#4FE3B0</span></div><div class="tok"><span>--watcher-2</span><span>#1FA978</span></div><div class="tok"><span>soft</span><span>rgba(79,227,176,.14)</span></div></div></div>
+    </div>
+
+    <h2 class="ds-h2">Status</h2>
+    <div class="status-row">
+      <div class="status-card"><div class="sig"><span class="chip" style="background:var(--ok)"></span>Success</div><div class="ex">Job completed · File uploaded</div><div class="sample" style="background:var(--ok-soft);color:var(--ok)">Indexed 1,284 assets</div></div>
+      <div class="status-card"><div class="sig"><span class="chip" style="background:var(--warn)"></span>Warning</div><div class="ex">Near quota · retry pending</div><div class="sample" style="background:var(--warn-soft);color:var(--warn)">3 files awaiting stability</div></div>
+      <div class="status-card"><div class="sig"><span class="chip" style="background:var(--err)"></span>Error</div><div class="ex">Pipeline failed · destination unreachable</div><div class="sample" style="background:var(--err-soft);color:var(--err)">SCP host refused connection</div></div>
+      <div class="status-card"><div class="sig"><span class="chip" style="background:var(--info)"></span>Info</div><div class="ex">Processing · awaiting input</div><div class="sample" style="background:var(--info-soft);color:var(--info)">Workflow queued · priority normal</div></div>
+    </div>
+  </main>
+</div>
+<script src="../sidebar.js"></script>
+</body></html>

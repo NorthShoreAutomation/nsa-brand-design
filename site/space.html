@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Space &amp; Radius — NSA</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../tokens.css"/><link rel="stylesheet" href="../components.css"/>
+<style>
+.space-row { display: grid; grid-template-columns: 80px 1fr 120px; gap: var(--s-4); align-items: center; padding: 14px 0; border-bottom: 1px solid var(--border-subtle); }
+.space-row .tok { font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); }
+.space-row .bar { height: 14px; background: linear-gradient(90deg, var(--nsa-signal), var(--nsa-signal-3)); border-radius: 2px; }
+.space-row .meta { font-family: var(--font-mono); font-size: 11px; color: var(--text-faint); text-align: right; }
+.radii { display: grid; grid-template-columns: repeat(6, 1fr); gap: var(--s-3); }
+.rad { display:flex; flex-direction:column; align-items:center; gap: 10px; padding: 18px; background: var(--surface); border: 1px solid var(--border-subtle); border-radius: var(--r-md); }
+.rad .block { width: 72px; height: 72px; background: linear-gradient(135deg, var(--nsa-signal), var(--nsa-signal-3)); }
+.rad .lbl { font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); }
+.elev { display: grid; grid-template-columns: repeat(3,1fr); gap: var(--s-4); }
+.elev-card { background: var(--bg); padding: 40px; border-radius: var(--r-lg); border: 1px solid var(--border-subtle); display:flex; flex-direction:column; align-items:center; gap: 16px; }
+.elev-card .chip { width: 160px; height: 100px; background: var(--surface); border-radius: var(--r-md); border: 1px solid var(--border); }
+.elev-card .lbl { font-family: var(--font-mono); font-size: 11px; color: var(--text-faint); }
+.grid-demo { position: relative; height: 360px; border: 1px solid var(--border-subtle); border-radius: var(--r-md); background-image: linear-gradient(rgba(94,161,255,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(94,161,255,.08) 1px, transparent 1px); background-size: 8px 8px; overflow: hidden; }
+.grid-demo .block { position: absolute; border-radius: 6px; background: var(--nsa-signal-soft); border: 1px solid var(--nsa-signal); color: var(--nsa-signal); font-family: var(--font-mono); font-size: 10px; display:flex; align-items:center; justify-content:center; }
+</style></head>
+<body>
+<div class="ds-shell">
+  <aside class="ds-side" data-ds-side data-current="space"></aside>
+  <main class="ds-main">
+    <div class="ds-eyebrow">Foundation · F.04</div>
+    <h1 class="ds-h1">Space &amp; Radius.</h1>
+    <p class="ds-lede">A 4pt grid underlies every layout. Radii come from a tight scale — nothing between. Shadows stay quiet; we let contrast and borders carry most of the elevation.</p>
+
+    <h2 class="ds-h2">Spacing scale</h2>
+    <div>
+      <div class="space-row"><div class="tok">--s-1</div><div class="bar" style="width:4px"></div><div class="meta">4px · 0.25rem</div></div>
+      <div class="space-row"><div class="tok">--s-2</div><div class="bar" style="width:8px"></div><div class="meta">8px · 0.5rem</div></div>
+      <div class="space-row"><div class="tok">--s-3</div><div class="bar" style="width:12px"></div><div class="meta">12px · 0.75rem</div></div>
+      <div class="space-row"><div class="tok">--s-4</div><div class="bar" style="width:16px"></div><div class="meta">16px · 1rem</div></div>
+      <div class="space-row"><div class="tok">--s-5</div><div class="bar" style="width:20px"></div><div class="meta">20px · 1.25rem</div></div>
+      <div class="space-row"><div class="tok">--s-6</div><div class="bar" style="width:24px"></div><div class="meta">24px · 1.5rem</div></div>
+      <div class="space-row"><div class="tok">--s-8</div><div class="bar" style="width:32px"></div><div class="meta">32px · 2rem</div></div>
+      <div class="space-row"><div class="tok">--s-10</div><div class="bar" style="width:40px"></div><div class="meta">40px · 2.5rem</div></div>
+      <div class="space-row"><div class="tok">--s-12</div><div class="bar" style="width:48px"></div><div class="meta">48px · 3rem</div></div>
+      <div class="space-row"><div class="tok">--s-16</div><div class="bar" style="width:64px"></div><div class="meta">64px · 4rem</div></div>
+      <div class="space-row"><div class="tok">--s-20</div><div class="bar" style="width:80px"></div><div class="meta">80px · 5rem</div></div>
+    </div>
+
+    <h2 class="ds-h2">Radius</h2>
+    <div class="radii">
+      <div class="rad"><div class="block" style="border-radius:var(--r-xs)"></div><div class="lbl">--r-xs · 4px</div></div>
+      <div class="rad"><div class="block" style="border-radius:var(--r-sm)"></div><div class="lbl">--r-sm · 6px</div></div>
+      <div class="rad"><div class="block" style="border-radius:var(--r-md)"></div><div class="lbl">--r-md · 10px</div></div>
+      <div class="rad"><div class="block" style="border-radius:var(--r-lg)"></div><div class="lbl">--r-lg · 14px</div></div>
+      <div class="rad"><div class="block" style="border-radius:var(--r-xl)"></div><div class="lbl">--r-xl · 20px</div></div>
+      <div class="rad"><div class="block" style="border-radius:var(--r-pill)"></div><div class="lbl">--r-pill · 999</div></div>
+    </div>
+
+    <h2 class="ds-h2">Elevation</h2>
+    <div class="elev">
+      <div class="elev-card"><div class="chip" style="box-shadow:none"></div><div class="lbl">Flat · border only</div></div>
+      <div class="elev-card"><div class="chip" style="box-shadow:var(--shadow-1)"></div><div class="lbl">--shadow-1 · rest</div></div>
+      <div class="elev-card"><div class="chip" style="box-shadow:var(--shadow-2)"></div><div class="lbl">--shadow-2 · popovers</div></div>
+    </div>
+
+    <h2 class="ds-h2">4pt grid in use</h2>
+    <div class="grid-demo">
+      <div class="block" style="left:16px; top:16px; width:240px; height:56px">header · 240×56</div>
+      <div class="block" style="left:16px; top:88px; width:160px; height:200px">sidebar · 160×200</div>
+      <div class="block" style="left:192px; top:88px; width:240px; height:96px">card · 240×96</div>
+      <div class="block" style="left:192px; top:200px; width:112px; height:88px">kpi · 112×88</div>
+      <div class="block" style="left:320px; top:200px; width:112px; height:88px">kpi · 112×88</div>
+      <div class="block" style="left:448px; top:88px; width:200px; height:200px">feed · 200×200</div>
+    </div>
+  </main>
+</div>
+<script src="../sidebar.js"></script>
+</body></html>

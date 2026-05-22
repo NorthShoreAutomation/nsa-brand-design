@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en" data-product="watcher"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>The Watcher — NSA</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../tokens.css"/><link rel="stylesheet" href="../components.css"/>
+<style>
+.app { border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; background: var(--bg); display: grid; grid-template-columns: 200px 1fr; min-height: 720px; }
+.app-side { background: var(--bg-sunken); border-right: 1px solid var(--border-subtle); padding: 18px; }
+.app-side .brand { font-family: var(--font-display); font-weight: 700; font-size: 18px; letter-spacing: -0.02em; display:flex; align-items:center; gap:8px; margin-bottom: 18px; }
+.app-side .brand::before { content:""; width: 10px; height: 10px; background: var(--watcher); border-radius: 50%; }
+.app-side nav a { display:flex; gap:8px; padding: 8px 10px; border-radius: 6px; font-size: 13px; color: var(--text-muted); margin-bottom: 2px; }
+.app-side nav a.on { background: var(--accent-soft); color: var(--accent); }
+.app-main { padding: 22px 26px; }
+.kpis { display:grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 18px; }
+.kpi { padding: 14px; background: var(--bg-sunken); border: 1px solid var(--border-subtle); border-radius: 8px; }
+.kpi .k { font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--text-faint); }
+.kpi .v { font-family: var(--font-display); font-size: 28px; font-weight: 700; letter-spacing: -0.02em; margin-top: 4px; }
+.kpi .d { font-size: 11px; color: var(--ok); }
+.chart { height: 90px; display:flex; align-items:flex-end; gap: 3px; padding: 10px 0; }
+.chart span { flex:1; background: linear-gradient(180deg, var(--watcher), var(--watcher-2)); border-radius: 2px 2px 0 0; }
+.work { padding: 14px; background: var(--bg-sunken); border: 1px solid var(--border-subtle); border-radius: 8px; margin-bottom: 10px; display:grid; grid-template-columns: 1fr auto auto auto; gap: 16px; align-items: center; }
+.work .n { font-weight: 600; font-size: 14px; }
+.work .sub { font-family: var(--font-mono); font-size: 11px; color: var(--text-faint); margin-top:2px; }
+.work .p { width: 160px; height: 6px; background: var(--bg); border-radius: 3px; overflow:hidden; }
+.work .p > div { height: 100%; background: var(--watcher); }
+.steps-strip { display:flex; gap: 3px; align-items: center; }
+.sm-step { width: 22px; height: 22px; border-radius: 4px; display:flex; align-items:center; justify-content:center; font-size:11px; border:1px solid var(--border-subtle); color: var(--text-faint); }
+.sm-step.ok { background: var(--ok-soft); color: var(--ok); border-color: transparent; }
+.sm-step.run { background: var(--info-soft); color: var(--info); border-color: transparent; }
+.sm-step.err { background: var(--err-soft); color: var(--err); border-color: transparent; }
+</style></head>
+<body>
+<div class="ds-shell">
+  <aside class="ds-side" data-ds-side data-current="watcher"></aside>
+  <main class="ds-main">
+    <div class="ds-eyebrow" style="color:var(--watcher)">Product · The Watcher · File Agent</div>
+    <h1 class="ds-h1">The Watcher.</h1>
+    <p class="ds-lede">Folders in, pipelines out. A single-binary agent with a live dashboard. Watcher-green accent, dense data, monospace where it matters.</p>
+    <div class="row" style="margin:var(--s-5) 0"><span class="ribbon"><span class="dot"></span>The Watcher</span><span class="badge">Accent · #4FE3B0</span><span class="badge">Go · single binary</span><span class="badge">SSE live updates</span></div>
+
+    <h2 class="ds-h2">Overview dashboard</h2>
+    <div class="app">
+      <aside class="app-side">
+        <div class="brand">the watcher</div>
+        <nav>
+          <a class="on">◨ Overview</a>
+          <a>▤ Feed</a>
+          <a>▸ Active</a>
+          <a>! Errors</a>
+          <a>⌁ Workflows</a>
+          <a>∧ Throughput</a>
+          <a>♥ Health</a>
+          <a>⚙ Destinations</a>
+        </nav>
+      </aside>
+      <section class="app-main">
+        <div class="kpis">
+          <div class="kpi"><div class="k">Files / 24h</div><div class="v">4,382</div><div class="d">+12%</div></div>
+          <div class="kpi"><div class="k">Active now</div><div class="v">7</div><div class="d" style="color:var(--info)">peak 24</div></div>
+          <div class="kpi"><div class="k">Success</div><div class="v">99.2%</div><div class="d">34 errors · 24h</div></div>
+          <div class="kpi"><div class="k">Throughput</div><div class="v">182/min</div><div class="d">avg 134</div></div>
+        </div>
+        <div class="row-between"><h3 class="ds-h3" style="margin:0">Throughput — last 24h</h3><span class="badge">files / min</span></div>
+        <div class="chart">
+          <span style="height:32%"></span><span style="height:48%"></span><span style="height:38%"></span><span style="height:62%"></span>
+          <span style="height:71%"></span><span style="height:55%"></span><span style="height:68%"></span><span style="height:84%"></span>
+          <span style="height:76%"></span><span style="height:92%"></span><span style="height:88%"></span><span style="height:70%"></span>
+          <span style="height:58%"></span><span style="height:44%"></span><span style="height:52%"></span><span style="height:66%"></span>
+          <span style="height:78%"></span><span style="height:82%"></span><span style="height:74%"></span><span style="height:61%"></span>
+          <span style="height:54%"></span><span style="height:48%"></span><span style="height:41%"></span><span style="height:36%"></span>
+        </div>
+        <h3 class="ds-h3">Active workflows</h3>
+        <div class="work">
+          <div><div class="n">xml-to-api</div><div class="sub">./inbox/*.xml → production-s3 · move → http_post</div></div>
+          <div class="steps-strip"><span class="sm-step ok">✓</span><span class="sm-step ok">✓</span><span class="sm-step run">●</span><span class="sm-step">○</span></div>
+          <div class="p"><div style="width:64%"></div></div>
+          <div class="mono" style="font-size:11px;color:var(--text-faint)">00:02:14</div>
+        </div>
+        <div class="work">
+          <div><div class="n">upload-to-s3</div><div class="sub">./outbox/* → nsa-filevault-01 · s3 · delete_source</div></div>
+          <div class="steps-strip"><span class="sm-step ok">✓</span><span class="sm-step run">●</span></div>
+          <div class="p"><div style="width:38%"></div></div>
+          <div class="mono" style="font-size:11px;color:var(--text-faint)">00:00:41</div>
+        </div>
+        <div class="work">
+          <div><div class="n">backup-to-staging</div><div class="sub">./outbox/*.zip → staging-server · scp · delete_after</div></div>
+          <div class="steps-strip"><span class="sm-step ok">✓</span><span class="sm-step err">!</span></div>
+          <div class="p"><div style="width:18%;background:var(--err)"></div></div>
+          <div class="mono" style="font-size:11px;color:var(--err)">retry 2/3</div>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+<script src="../sidebar.js"></script>
+</body></html>

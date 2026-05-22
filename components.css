@@ -1,0 +1,201 @@
+/* =========================================================
+   NSA Design System — Components
+   ========================================================= */
+
+/* ---------- Layout shell ---------- */
+.ds-shell {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  min-height: 100vh;
+}
+.ds-side {
+  background: var(--bg-sunken);
+  border-right: 1px solid var(--border-subtle);
+  padding: var(--s-6) var(--s-5);
+  position: sticky; top: 0; height: 100vh; overflow-y: auto;
+}
+.ds-main { padding: var(--s-10) var(--s-12); max-width: 1280px; }
+.ds-logo {
+  display: flex; align-items: center; gap: var(--s-3);
+  padding-bottom: var(--s-6);
+  border-bottom: 1px solid var(--border-subtle);
+  margin-bottom: var(--s-5);
+}
+.ds-logo img { height: 22px; width: auto; }
+.ds-logo .tag {
+  font-size: 10px; letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase; color: var(--text-faint);
+  padding: 2px 6px; border: 1px solid var(--border); border-radius: var(--r-xs);
+}
+.ds-nav-section {
+  font-size: 10px; letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase; color: var(--text-faint);
+  margin: var(--s-5) 0 var(--s-2) var(--s-2);
+}
+.ds-nav a {
+  display: block; padding: 8px 10px; border-radius: var(--r-sm);
+  color: var(--text-muted); font-size: var(--fs-sm);
+  transition: background .12s, color .12s;
+}
+.ds-nav a:hover { background: var(--surface-hover); color: var(--text); }
+.ds-nav a.active {
+  background: var(--nsa-signal-soft); color: var(--nsa-snow);
+  box-shadow: inset 2px 0 0 var(--nsa-signal);
+}
+
+/* ---------- Page headers ---------- */
+.ds-eyebrow {
+  font-size: 11px; letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase; color: var(--text-faint); font-weight: 600;
+}
+.ds-h1 {
+  font-family: var(--font-display);
+  font-size: var(--fs-5xl); font-weight: 700;
+  letter-spacing: var(--tracking-tight); line-height: var(--lh-tight);
+  margin: var(--s-2) 0 var(--s-4);
+}
+.ds-lede {
+  font-size: var(--fs-xl); color: var(--text-muted);
+  max-width: 68ch; line-height: var(--lh-snug);
+}
+.ds-h2 {
+  font-size: var(--fs-2xl); font-weight: 600;
+  letter-spacing: var(--tracking-snug);
+  margin: var(--s-12) 0 var(--s-4);
+}
+.ds-h3 {
+  font-size: var(--fs-lg); font-weight: 600;
+  margin: var(--s-6) 0 var(--s-3); color: var(--text);
+}
+.ds-note { color: var(--text-dim); font-size: var(--fs-sm); max-width: 68ch; }
+
+.ds-rule { height: 1px; background: var(--border-subtle); margin: var(--s-10) 0; border: 0; }
+
+/* ---------- Cards / panels ---------- */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-lg);
+  padding: var(--s-5);
+}
+.card-raised {
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-1);
+}
+.card-kicker {
+  font-size: 10px; letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase; color: var(--text-faint); font-weight: 600;
+}
+.grid { display: grid; gap: var(--s-4); }
+.g-2 { grid-template-columns: repeat(2, 1fr); }
+.g-3 { grid-template-columns: repeat(3, 1fr); }
+.g-4 { grid-template-columns: repeat(4, 1fr); }
+.g-6 { grid-template-columns: repeat(6, 1fr); }
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  height: 36px; padding: 0 14px;
+  border-radius: var(--r-sm);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-size: var(--fs-sm); font-weight: 500;
+  transition: background .14s, border-color .14s, transform .08s;
+}
+.btn:hover { background: var(--surface-hover); border-color: var(--border-strong); }
+.btn:active { transform: translateY(1px); }
+.btn:focus-visible { outline: none; box-shadow: var(--ring); }
+.btn-primary {
+  background: var(--accent); border-color: transparent; color: #071022;
+  font-weight: 600;
+}
+.btn-primary:hover { background: var(--accent-2); color: white; }
+.btn-ghost { background: transparent; border-color: transparent; color: var(--text-muted); }
+.btn-ghost:hover { background: var(--surface-hover); color: var(--text); }
+.btn-danger { background: var(--err); border-color: transparent; color: #1a0606; font-weight: 600; }
+.btn-sm { height: 28px; padding: 0 10px; font-size: var(--fs-xs); border-radius: var(--r-xs); }
+.btn-lg { height: 44px; padding: 0 20px; font-size: var(--fs-md); }
+.btn-icon { padding: 0; width: 36px; justify-content: center; }
+
+/* ---------- Inputs ---------- */
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field label { font-size: var(--fs-xs); color: var(--text-dim); font-weight: 500; }
+.input, .select, .textarea {
+  background: var(--bg-sunken);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: 0 12px;
+  height: 36px;
+  color: var(--text);
+  font-size: var(--fs-sm);
+  transition: border-color .14s, box-shadow .14s;
+  width: 100%;
+}
+.textarea { height: auto; padding: 10px 12px; line-height: var(--lh-snug); resize: vertical; }
+.input:focus, .select:focus, .textarea:focus { outline: none; border-color: var(--border-focus); box-shadow: var(--ring); }
+.input::placeholder { color: var(--text-faint); }
+
+/* ---------- Badges / chips ---------- */
+.badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 3px 8px; border-radius: var(--r-pill);
+  font-size: 11px; font-weight: 600; letter-spacing: .02em;
+  background: var(--surface-hover); color: var(--text-muted);
+  border: 1px solid var(--border-subtle);
+}
+.badge-ok   { background: var(--ok-soft);   color: var(--ok);   border-color: transparent; }
+.badge-warn { background: var(--warn-soft); color: var(--warn); border-color: transparent; }
+.badge-err  { background: var(--err-soft);  color: var(--err);  border-color: transparent; }
+.badge-info { background: var(--info-soft); color: var(--info); border-color: transparent; }
+.badge-accent { background: var(--accent-soft); color: var(--accent); border-color: transparent; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+
+/* ---------- Tables ---------- */
+.table { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); }
+.table th {
+  text-align: left; font-weight: 500; color: var(--text-faint);
+  font-size: 11px; letter-spacing: .05em; text-transform: uppercase;
+  padding: 10px 12px; border-bottom: 1px solid var(--border-subtle);
+}
+.table td { padding: 12px; border-bottom: 1px solid var(--border-subtle); color: var(--text-muted); }
+.table tr:hover td { background: var(--surface-hover); }
+
+/* ---------- KBD / code ---------- */
+kbd, .kbd {
+  font-family: var(--font-mono); font-size: 11px;
+  padding: 2px 6px; background: var(--bg-sunken);
+  border: 1px solid var(--border); border-radius: var(--r-xs);
+  color: var(--text-muted);
+}
+code.inline { font-family: var(--font-mono); font-size: 12px; color: var(--nsa-signal); background: var(--nsa-signal-soft); padding: 1px 6px; border-radius: var(--r-xs); }
+
+/* ---------- Misc ---------- */
+.stack { display: flex; flex-direction: column; gap: var(--s-3); }
+.row { display: flex; align-items: center; gap: var(--s-3); flex-wrap: wrap; }
+.row-between { display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); }
+.mono { font-family: var(--font-mono); }
+.eye { font-size: 10px; letter-spacing: var(--tracking-eyebrow); text-transform: uppercase; color: var(--text-faint); font-weight: 600; }
+
+/* ---------- Swatches ---------- */
+.swatch {
+  border-radius: var(--r-md); overflow: hidden;
+  border: 1px solid var(--border-subtle);
+  display: flex; flex-direction: column;
+}
+.swatch-color { height: 92px; }
+.swatch-meta { padding: 10px 12px; background: var(--surface); }
+.swatch-meta .name { font-size: var(--fs-sm); font-weight: 600; }
+.swatch-meta .hex { font-family: var(--font-mono); font-size: 11px; color: var(--text-faint); }
+
+/* ---------- Product ribbon ---------- */
+.ribbon {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 4px 10px; border-radius: var(--r-pill);
+  background: var(--accent-soft); color: var(--accent);
+  font-size: 11px; font-weight: 600; letter-spacing: .04em;
+  text-transform: uppercase;
+}
+.ribbon .dot { background: currentColor; }

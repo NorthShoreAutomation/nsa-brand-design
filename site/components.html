@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Components — NSA</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../tokens.css"/><link rel="stylesheet" href="../components.css"/>
+<style>
+.sect { padding: 24px; background: var(--surface); border: 1px solid var(--border-subtle); border-radius: var(--r-lg); margin-bottom: var(--s-5); }
+.sect h3 { margin: 0 0 16px; font-size: 14px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--text-faint); }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-4); }
+.nav-demo { display:flex; gap: 2px; background: var(--bg-sunken); padding: 4px; border-radius: var(--r-sm); width: fit-content; }
+.nav-demo a { padding: 8px 14px; border-radius: var(--r-xs); font-size: 13px; color: var(--text-muted); }
+.nav-demo a.active { background: var(--surface); color: var(--text); box-shadow: var(--shadow-1); }
+.topbar { display:flex; align-items:center; gap: 14px; padding: 14px 18px; background: var(--bg-sunken); border: 1px solid var(--border-subtle); border-radius: var(--r-md); }
+.topbar .brand { font-family: var(--font-display); font-weight: 700; letter-spacing: -0.01em; }
+.topbar .search { flex: 1; display:flex; align-items:center; gap: 10px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-sm); padding: 7px 12px; font-size: 13px; color: var(--text-faint); }
+.topbar .search .k { margin-left: auto; }
+.avatar { width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, var(--nsa-signal), var(--akomi-2)); display:inline-block; }
+</style></head>
+<body>
+<div class="ds-shell">
+  <aside class="ds-side" data-ds-side data-current="components"></aside>
+  <main class="ds-main">
+    <div class="ds-eyebrow">Components · C.01</div>
+    <h1 class="ds-h1">UI Elements.</h1>
+    <p class="ds-lede">The shared kit. Buttons, fields, cards, nav, tables, badges — all styled to the NSA spine and theme-aware for each product.</p>
+
+    <div class="sect">
+      <h3>Buttons</h3>
+      <div class="row">
+        <button class="btn btn-primary">Run workflow</button>
+        <button class="btn">Secondary</button>
+        <button class="btn btn-ghost">Ghost</button>
+        <button class="btn btn-danger">Delete</button>
+        <button class="btn btn-icon" aria-label="settings">⚙</button>
+      </div>
+      <div class="row" style="margin-top:14px">
+        <button class="btn btn-primary btn-lg">Large</button>
+        <button class="btn">Default</button>
+        <button class="btn btn-sm">Small</button>
+        <button class="btn" disabled style="opacity:.4">Disabled</button>
+      </div>
+    </div>
+
+    <div class="sect">
+      <h3>Inputs</h3>
+      <div class="two">
+        <div class="field"><label>Asset title</label><input class="input" value="S05E12_interview_raw.mp4"/></div>
+        <div class="field"><label>Bucket</label><select class="select"><option>nsa-filevault-01</option><option>media-archive</option></select></div>
+        <div class="field" style="grid-column:1/-1"><label>Description</label><textarea class="textarea" rows="3" placeholder="Short description…">A 4K interview clip, raw, no color correction. Ingested via Watcher → Tsunami → Akomi.</textarea></div>
+      </div>
+    </div>
+
+    <div class="sect">
+      <h3>Badges &amp; status</h3>
+      <div class="row">
+        <span class="badge badge-ok"><span class="dot"></span>Completed</span>
+        <span class="badge badge-warn"><span class="dot"></span>Retrying</span>
+        <span class="badge badge-err"><span class="dot"></span>Failed</span>
+        <span class="badge badge-info"><span class="dot"></span>Queued</span>
+        <span class="badge badge-accent">MP4</span>
+        <span class="badge">v1.0</span>
+        <span class="kbd">⌘K</span><span class="kbd">/</span>
+      </div>
+    </div>
+
+    <div class="sect">
+      <h3>Navigation</h3>
+      <div class="topbar" style="margin-bottom: 14px">
+        <span class="brand">Tsunami</span>
+        <span class="badge badge-info" style="font-size:10px">BETA</span>
+        <div class="search"><span>⌕</span><span>Search library…</span><span class="k kbd">⌘K</span></div>
+        <button class="btn btn-sm">Upload</button>
+        <span class="avatar"></span>
+      </div>
+      <div class="nav-demo">
+        <a class="active">Library</a>
+        <a>Collections</a>
+        <a>Jobs</a>
+        <a>Settings</a>
+      </div>
+    </div>
+
+    <div class="sect">
+      <h3>Tables</h3>
+      <table class="table">
+        <thead><tr><th>File</th><th>Workflow</th><th>Destination</th><th>Status</th><th>Elapsed</th></tr></thead>
+        <tbody>
+          <tr><td class="mono" style="color:var(--text)">S05E12_raw.mp4</td><td>xml-to-api</td><td>production-s3</td><td><span class="badge badge-ok"><span class="dot"></span>Done</span></td><td class="mono">00:01:42</td></tr>
+          <tr><td class="mono" style="color:var(--text)">pilot_master.mov</td><td>upload-to-s3</td><td>nsa-filevault-01</td><td><span class="badge badge-info"><span class="dot"></span>Running</span></td><td class="mono">00:00:07</td></tr>
+          <tr><td class="mono" style="color:var(--text)">dailies.zip</td><td>backup-to-staging</td><td>staging-server</td><td><span class="badge badge-warn"><span class="dot"></span>Retrying 2/3</span></td><td class="mono">00:00:54</td></tr>
+          <tr><td class="mono" style="color:var(--text)">report.xml</td><td>xml-to-api</td><td>webhook-endpoint</td><td><span class="badge badge-err"><span class="dot"></span>Failed</span></td><td class="mono">—</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="sect">
+      <h3>Cards</h3>
+      <div class="two">
+        <div class="card-raised" style="padding:20px">
+          <div class="card-kicker">KPI · Last 24h</div>
+          <div style="font-family:var(--font-display);font-size:44px;font-weight:700;letter-spacing:-0.02em;margin-top:6px">4,382</div>
+          <div style="color:var(--text-dim);font-size:12px">Files routed through 12 workflows</div>
+        </div>
+        <div class="card-raised" style="padding:20px">
+          <div class="card-kicker">Asset</div>
+          <div class="row" style="margin-top:8px">
+            <div style="width:64px;height:40px;background:linear-gradient(135deg,#20344f,#102034);border-radius:6px"></div>
+            <div><div style="font-weight:600">S05E12_raw.mp4</div><div style="font-family:var(--font-mono);font-size:11px;color:var(--text-faint)">3840×2160 · H.264 · 1.2 GB</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sect">
+      <h3>Theme ribbons — per product</h3>
+      <div class="row">
+        <span class="ribbon" data-product="akomi"><span class="dot"></span>Akomi</span>
+        <span class="ribbon" data-product="tsunami"><span class="dot"></span>Tsunami</span>
+        <span class="ribbon" data-product="watcher"><span class="dot"></span>The Watcher</span>
+        <span class="ribbon"><span class="dot"></span>NSA Signal</span>
+      </div>
+    </div>
+  </main>
+</div>
+<script src="../sidebar.js"></script>
+</body></html>

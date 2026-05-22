@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Patterns — NSA</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../tokens.css"/><link rel="stylesheet" href="../components.css"/>
+<style>
+.sect { padding: 24px; background: var(--surface); border: 1px solid var(--border-subtle); border-radius: var(--r-lg); margin-bottom: var(--s-5); }
+.sect h3 { margin: 0 0 16px; font-size: 14px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--text-faint); }
+
+/* Pipeline */
+.pipeline { display:grid; grid-template-columns: repeat(5, 1fr); gap: var(--s-3); position: relative; }
+.step { padding: 14px; background: var(--bg-sunken); border: 1px solid var(--border-subtle); border-radius: var(--r-md); position: relative; }
+.step .st { font-family: var(--font-mono); font-size: 10px; color: var(--text-faint); letter-spacing: .04em; text-transform: uppercase; }
+.step .lbl { font-weight: 600; margin-top: 4px; }
+.step .meta { font-family: var(--font-mono); font-size: 11px; color: var(--text-dim); margin-top: 8px; }
+.step.ok { border-color: var(--ok); box-shadow: 0 0 0 1px var(--ok-soft) inset; }
+.step.ok .st { color: var(--ok); }
+.step.run { border-color: var(--info); }
+.step.run .st { color: var(--info); }
+.step.run::after { content: ""; position: absolute; inset: 0; border-radius: var(--r-md); box-shadow: 0 0 0 3px var(--info-soft); animation: pulse 1.8s infinite; pointer-events: none; }
+@keyframes pulse { 0%, 100% { opacity: .4 } 50% { opacity: 1 } }
+
+/* Empty state */
+.empty { padding: 56px 32px; text-align: center; border: 1px dashed var(--border); border-radius: var(--r-lg); }
+.empty .ic { width: 64px; height: 64px; margin: 0 auto 16px; border-radius: var(--r-md); background: var(--nsa-signal-soft); color: var(--nsa-signal); display:flex; align-items:center; justify-content:center; font-size: 28px; }
+.empty h4 { margin: 0; font-size: 20px; font-weight: 600; letter-spacing: -0.01em; }
+.empty p { color: var(--text-dim); margin: 8px 0 20px; }
+
+/* Toasts */
+.toast-stack { display:flex; flex-direction:column; gap: 10px; }
+.toast { display:flex; gap: 12px; align-items:flex-start; padding: 14px 16px; background: var(--bg-raised); border: 1px solid var(--border); border-radius: var(--r-md); box-shadow: var(--shadow-2); max-width: 420px; }
+.toast .chip { width: 10px; height: 10px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
+.toast h5 { margin: 0; font-size: 13px; font-weight: 600; }
+.toast p { margin: 2px 0 0; font-size: 12px; color: var(--text-dim); }
+
+/* Job row */
+.job-row { display: grid; grid-template-columns: 24px 1fr auto auto; gap: 16px; padding: 14px 16px; background: var(--bg-sunken); border: 1px solid var(--border-subtle); border-radius: var(--r-md); align-items:center; }
+.job-row + .job-row { margin-top: 8px; }
+.job-row .ic { width: 24px; height: 24px; border-radius: 6px; background: var(--info-soft); color: var(--info); display:flex; align-items:center; justify-content:center; font-size: 12px; }
+.job-row .name { font-weight: 600; font-size: 14px; }
+.job-row .sub { font-family: var(--font-mono); font-size: 11px; color: var(--text-faint); }
+.job-row .progress { width: 140px; height: 6px; background: var(--bg); border-radius: 3px; overflow: hidden; }
+.job-row .progress > div { height: 100%; background: linear-gradient(90deg, var(--nsa-signal), var(--tsunami)); }
+.job-row .t { font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); }
+
+/* Log */
+.log { font-family: var(--font-mono); font-size: 12px; line-height: 1.75; background: var(--n-0); border: 1px solid var(--border-subtle); border-radius: var(--r-md); padding: 16px; color: var(--text-muted); max-height: 220px; overflow: hidden; }
+.log .t { color: var(--text-faint); }
+.log .i { color: var(--nsa-signal); }
+.log .w { color: var(--warn); }
+.log .e { color: var(--err); }
+.log .s { color: var(--ok); }
+</style></head>
+<body>
+<div class="ds-shell">
+  <aside class="ds-side" data-ds-side data-current="patterns"></aside>
+  <main class="ds-main">
+    <div class="ds-eyebrow">Components · C.02</div>
+    <h1 class="ds-h1">Patterns.</h1>
+    <p class="ds-lede">Reusable compositions that live across all three products — pipelines, jobs, empty states, toasts, logs.</p>
+
+    <div class="sect">
+      <h3>Pipeline</h3>
+      <div class="pipeline">
+        <div class="step ok"><div class="st">✓ Detect</div><div class="lbl">Stable</div><div class="meta">02:12s</div></div>
+        <div class="step ok"><div class="st">✓ Move</div><div class="lbl">/processing</div><div class="meta">00:04s</div></div>
+        <div class="step ok"><div class="st">✓ Transcode</div><div class="lbl">H.264 · 1080p</div><div class="meta">01:41s</div></div>
+        <div class="step run"><div class="st">● Upload</div><div class="lbl">s3://nsa-filevault-01</div><div class="meta">34% · 420 MB/s</div></div>
+        <div class="step"><div class="st">○ Notify</div><div class="lbl">webhook-endpoint</div><div class="meta">—</div></div>
+      </div>
+    </div>
+
+    <div class="sect">
+      <h3>Job list</h3>
+      <div class="job-row">
+        <div class="ic">▶</div>
+        <div><div class="name">Transcribe S05E12_interview_raw.mp4</div><div class="sub">tsunami · job_01HQ8 · started 14:22:05</div></div>
+        <div class="progress"><div style="width:62%"></div></div>
+        <div class="t">00:02:14</div>
+      </div>
+      <div class="job-row">
+        <div class="ic">▶</div>
+        <div><div class="name">Rekognition labels on 84 images</div><div class="sub">tsunami · job_01HQA · started 14:18:30</div></div>
+        <div class="progress"><div style="width:88%"></div></div>
+        <div class="t">00:06:01</div>
+      </div>
+      <div class="job-row">
+        <div class="ic">▶</div>
+        <div><div class="name">Index 1,284 assets to OpenSearch</div><div class="sub">akomi · job_01HQC · started 14:15:00</div></div>
+        <div class="progress"><div style="width:41%"></div></div>
+        <div class="t">00:09:44</div>
+      </div>
+    </div>
+
+    <div class="sect">
+      <h3>Empty state</h3>
+      <div class="empty">
+        <div class="ic">⌕</div>
+        <h4>No assets match this search yet.</h4>
+        <p>Try broadening the filter, or <a style="color:var(--nsa-signal)">clear the query</a>.</p>
+        <button class="btn btn-primary">Upload something</button>
+      </div>
+    </div>
+
+    <div class="sect">
+      <h3>Toasts</h3>
+      <div class="toast-stack">
+        <div class="toast"><span class="chip" style="background:var(--ok)"></span><div><h5>Workflow saved</h5><p>xml-to-api · 3 steps · enabled</p></div></div>
+        <div class="toast"><span class="chip" style="background:var(--warn)"></span><div><h5>Near quota</h5><p>84% of 1 TB used on nsa-filevault-01</p></div></div>
+        <div class="toast"><span class="chip" style="background:var(--err)"></span><div><h5>SCP destination unreachable</h5><p>staging-server · connection refused. Retry in 5s.</p></div></div>
+      </div>
+    </div>
+
+    <div class="sect">
+      <h3>Log stream</h3>
+      <div class="log">
+<span class="t">14:22:05.012</span> <span class="i">INFO</span>  detected file ./inbox/S05E12_raw.mp4 size=1.2GB<br>
+<span class="t">14:22:07.288</span> <span class="i">INFO</span>  stability threshold met · 2.1s<br>
+<span class="t">14:22:07.301</span> <span class="s">OK</span>    move → ./processing/S05E12_raw.mp4<br>
+<span class="t">14:22:08.104</span> <span class="i">INFO</span>  transcode started · preset=h264-1080p<br>
+<span class="t">14:23:49.772</span> <span class="s">OK</span>    transcode complete · 101.6s · 384 MB out<br>
+<span class="t">14:23:49.801</span> <span class="i">INFO</span>  s3 upload → s3://nsa-filevault-01/ingest/2026-04-18/<br>
+<span class="t">14:24:17.442</span> <span class="w">WARN</span>  slow upload · 210 MB/s (expected 400+)<br>
+<span class="t">14:24:41.009</span> <span class="s">OK</span>    uploaded · key=S05E12_raw.mp4<br>
+      </div>
+    </div>
+  </main>
+</div>
+<script src="../sidebar.js"></script>
+</body></html>

@@ -1,0 +1,11 @@
+# Build artifacts, OS junk
+.DS_Store
+Thumbs.db
+node_modules/
+
+# Scratch / local-only
+tmp/
+
+# IMPORTANT: fonts/ IS included on purpose.
+# Microgramma is licensed for redistribution under NSA's license terms.
+# Do not add fonts/ here.
