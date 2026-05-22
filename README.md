@@ -37,16 +37,22 @@ To make Claude follow the design system when generating HTML in another project,
 
 ## Releasing changes
 
-```bash
-# 1. Edit tokens.css and/or components.css
-# 2. Bump VERSION if appropriate
-# 3. Regenerate the distributable
-./build.sh
-# 4. Commit and push
-git commit -am "vX.Y — <change>"
-git push
-```
+Releases are label-driven and run in two phases. The author does **not** bump `VERSION`, run `build.sh`, or tag — the workflow does all of that.
 
-GitHub Pages serves whatever is on `main`, so the push above is the deploy.
+1. Branch from `main`, edit `tokens.css` / `components.css`.
+2. Add entries under `## [Unreleased]` in `CHANGELOG.md`.
+3. Open a PR.
+4. Label the PR with **one** of:
+   - `release:major` — breaking change (`X+1.0.0`)
+   - `release:minor` — new feature, backward-compatible (`X.Y+1.0`)
+   - `release:patch` — fix only (`X.Y.Z+1`)
+   - `release:skip` (or no label) — merge with no release cut
+5. Merge.
 
-See [`DISTRIBUTION.md`](./DISTRIBUTION.md) for hosting details (GitHub Pages primary; jsDelivr as an alternative for external/version-pinned distribution).
+**Phase 1 (automatic).** `.github/workflows/release.yml` bumps `VERSION`, rewrites `CHANGELOG.md` (moves `[Unreleased]` under a new dated heading), runs `build.sh`, commits to a `release/vX.Y.Z` branch, and opens a release PR back to `main`.
+
+**Phase 2 (one click).** A maintainer reviews and merges the release PR. The workflow detects the `VERSION` change on push and creates the `vX.Y.Z` tag + GitHub Release with `dist/nsa.css` attached.
+
+GitHub Pages serves whatever is on `main`, so the release-PR merge is also the deploy of the new version to the live consumer URL.
+
+See [`DISTRIBUTION.md`](./DISTRIBUTION.md) for the full release flow and emergency-release procedure.

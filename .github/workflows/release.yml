@@ -1,0 +1,230 @@
+name: release
+
+# Two-phase auto-release. Branch protection on main (org ruleset
+# `nsa-protect-default-branch`) requires PRs, so this workflow does not
+# push directly to main. Instead:
+#
+#   Phase 1 — open-release-pr
+#     Triggered when a labeled source PR merges to main.
+#     Bumps VERSION, rewrites CHANGELOG.md, runs build.sh, commits to a
+#     new `release/vX.Y.Z` branch, opens a release PR back to main.
+#
+#   Phase 2 — tag-and-publish
+#     Triggered by any push to main that changes VERSION (i.e. the
+#     release PR was merged). Tags vX.Y.Z and creates a GitHub Release
+#     with dist/nsa.css attached.
+#
+# Labels on the source PR control the bump:
+#   release:major   →  X+1.0.0
+#   release:minor   →  X.Y+1.0
+#   release:patch   →  X.Y.Z+1
+#   release:skip    →  no release
+#   (no label)      →  no release
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  open-release-pr:
+    # Source PR merged → open a release PR.
+    # Skip release PRs themselves (head branch release/v*) to avoid loops.
+    if: |
+      github.event_name == 'pull_request' &&
+      github.event.pull_request.merged == true &&
+      !startsWith(github.event.pull_request.head.ref, 'release/v')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Determine bump level from PR labels
+        id: bump
+        env:
+          LABELS: ${{ toJson(github.event.pull_request.labels.*.name) }}
+        run: |
+          if   echo "$LABELS" | grep -q '"release:major"'; then level=major
+          elif echo "$LABELS" | grep -q '"release:minor"'; then level=minor
+          elif echo "$LABELS" | grep -q '"release:patch"'; then level=patch
+          else level=skip
+          fi
+          echo "level=$level" >> "$GITHUB_OUTPUT"
+          echo "Bump level: $level"
+
+      - name: Checkout main
+        if: steps.bump.outputs.level != 'skip'
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Compute new version
+        if: steps.bump.outputs.level != 'skip'
+        id: version
+        run: |
+          set -euo pipefail
+          current="$(cat VERSION)"
+          # Normalize legacy X.Y → X.Y.0
+          case "$current" in
+            *.*.*) ;;
+            *.*)   current="${current}.0" ;;
+            *)     current="${current}.0.0" ;;
+          esac
+          IFS=. read -r major minor patch <<<"$current"
+          case "${{ steps.bump.outputs.level }}" in
+            major) major=$((major+1)); minor=0; patch=0 ;;
+            minor) minor=$((minor+1)); patch=0 ;;
+            patch) patch=$((patch+1)) ;;
+          esac
+          new="${major}.${minor}.${patch}"
+          echo "new=$new"                       >> "$GITHUB_OUTPUT"
+          echo "tag=v${new}"                    >> "$GITHUB_OUTPUT"
+          echo "branch=release/v${new}"         >> "$GITHUB_OUTPUT"
+          echo "date=$(date -u +%Y-%m-%d)"      >> "$GITHUB_OUTPUT"
+          echo "Bumping $(cat VERSION) → ${new} (${{ steps.bump.outputs.level }})"
+
+      - name: Abort if release branch already exists
+        if: steps.bump.outputs.level != 'skip'
+        run: |
+          if git ls-remote --exit-code --heads origin "${{ steps.version.outputs.branch }}" >/dev/null 2>&1; then
+            echo "Release branch ${{ steps.version.outputs.branch }} already exists on origin." >&2
+            echo "Resolve manually (delete the stale branch, or merge/close the open release PR) before re-running." >&2
+            exit 1
+          fi
+
+      - name: Update VERSION
+        if: steps.bump.outputs.level != 'skip'
+        run: echo "${{ steps.version.outputs.new }}" > VERSION
+
+      - name: Update CHANGELOG.md
+        if: steps.bump.outputs.level != 'skip'
+        run: |
+          set -euo pipefail
+          awk -v ver="${{ steps.version.outputs.new }}" -v date="${{ steps.version.outputs.date }}" '
+            BEGIN { replaced = 0 }
+            /^## \[Unreleased\]/ && !replaced {
+              print
+              print ""
+              print "## [" ver "] — " date
+              replaced = 1
+              next
+            }
+            { print }
+            END {
+              if (!replaced) {
+                print "[release.yml] ERROR: no [Unreleased] heading found in CHANGELOG.md" > "/dev/stderr"
+                exit 1
+              }
+            }
+          ' CHANGELOG.md > CHANGELOG.md.new
+          mv CHANGELOG.md.new CHANGELOG.md
+
+      - name: Build dist/nsa.css
+        if: steps.bump.outputs.level != 'skip'
+        run: ./build.sh
+
+      - name: Commit and push release branch
+        if: steps.bump.outputs.level != 'skip'
+        run: |
+          set -euo pipefail
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "${{ steps.version.outputs.branch }}"
+          git add VERSION CHANGELOG.md sidebar.js dist/nsa.css
+          git commit -m "release ${{ steps.version.outputs.tag }}"
+          git push origin "${{ steps.version.outputs.branch }}"
+
+      - name: Open release PR
+        if: steps.bump.outputs.level != 'skip'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.version.outputs.tag }}
+          NEW: ${{ steps.version.outputs.new }}
+          DATE: ${{ steps.version.outputs.date }}
+          BRANCH: ${{ steps.version.outputs.branch }}
+          SRC_PR: ${{ github.event.pull_request.number }}
+        run: |
+          set -euo pipefail
+          body_file="$(mktemp)"
+          cat > "$body_file" <<EOF
+          Automated release PR opened by \`.github/workflows/release.yml\` after merging #${SRC_PR}.
+
+          This PR contains:
+          - \`VERSION\` bumped to \`${NEW}\`
+          - \`CHANGELOG.md\` — \`[Unreleased]\` moved under \`## [${NEW}] — ${DATE}\`
+          - \`dist/nsa.css\` regenerated by \`build.sh\`
+          - \`sidebar.js\` version label synced
+
+          **Merging this PR publishes the release.** The workflow will detect the \`VERSION\` change, tag \`${TAG}\`, and create a GitHub Release with \`dist/nsa.css\` attached.
+
+          Do not add a \`release:*\` label to this PR.
+          EOF
+          gh pr create \
+            --base main \
+            --head "${BRANCH}" \
+            --title "release ${TAG}" \
+            --body-file "$body_file"
+
+  tag-and-publish:
+    # Push to main that changes VERSION → tag + GitHub Release.
+    # This handles release-PR merges (humans merging via GitHub UI).
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout (with parent)
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 2
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Detect VERSION change
+        id: detect
+        run: |
+          set -euo pipefail
+          old="$(git show HEAD~1:VERSION 2>/dev/null || true)"
+          new="$(cat VERSION)"
+          if [ "$old" = "$new" ]; then
+            echo "VERSION unchanged (${new}) — not a release commit. Skipping."
+            echo "release=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "VERSION changed: ${old:-<none>} → ${new}"
+          echo "release=true"     >> "$GITHUB_OUTPUT"
+          echo "tag=v${new}"      >> "$GITHUB_OUTPUT"
+
+      - name: Skip if tag already exists
+        if: steps.detect.outputs.release == 'true'
+        id: tagcheck
+        run: |
+          if git ls-remote --exit-code --tags origin "refs/tags/${{ steps.detect.outputs.tag }}" >/dev/null 2>&1; then
+            echo "Tag ${{ steps.detect.outputs.tag }} already exists on origin — skipping publish."
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Tag and push
+        if: steps.detect.outputs.release == 'true' && steps.tagcheck.outputs.exists == 'false'
+        run: |
+          git tag "${{ steps.detect.outputs.tag }}"
+          git push origin "${{ steps.detect.outputs.tag }}"
+
+      - name: Create GitHub Release
+        if: steps.detect.outputs.release == 'true' && steps.tagcheck.outputs.exists == 'false'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${{ steps.detect.outputs.tag }}" \
+            dist/nsa.css \
+            --title "${{ steps.detect.outputs.tag }}" \
+            --generate-notes
