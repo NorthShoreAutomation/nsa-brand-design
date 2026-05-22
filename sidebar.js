@@ -1,6 +1,9 @@
-// Shared sidebar for NSA Design System
-// Version label is rewritten by build.sh from the VERSION file at the repo root.
-const NSA_DS_VERSION = 'v1.0';
+// Shared sidebar for NSA Design System.
+// The release workflow substitutes __NSA_VERSION__ in the deployed copy
+// (Pages artifact) — locally and on `main`, this stays as a placeholder
+// so source diffs aren't churned by release commits.
+const NSA_DS_VERSION = '__NSA_VERSION__';
+const NSA_DS_VERSION_DISPLAY = NSA_DS_VERSION.startsWith('__') ? 'dev' : NSA_DS_VERSION;
 document.addEventListener('DOMContentLoaded', () => {
   const side = document.querySelector('[data-ds-side]');
   if (!side) return;
@@ -8,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
   side.innerHTML = `
     <div class="ds-logo">
       <img src="../assets/nsa-logo-white.png" alt="NSA"/>
-      <span class="tag">Design System · ${NSA_DS_VERSION}</span>
+      <span class="tag">Design System · ${NSA_DS_VERSION_DISPLAY}</span>
     </div>
     <div class="ds-nav-section">Foundations</div>
     <nav class="ds-nav">

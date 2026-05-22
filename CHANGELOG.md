@@ -7,15 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Added
-- `.github/workflows/release.yml` — two-phase auto-release pipeline that respects the org-level branch protection on `main`. **Phase 1** fires when a labeled source PR merges to `main`: reads the `release:major|minor|patch` label, bumps `VERSION`, rewrites `CHANGELOG.md` (moves `[Unreleased]` under a new dated version heading), runs `build.sh`, commits to a `release/vX.Y.Z` branch, and opens a release PR back to `main`. **Phase 2** fires when any push to `main` changes the `VERSION` file (i.e. the release PR is merged): tags `vX.Y.Z` and creates a GitHub Release with `dist/nsa.css` attached. PRs with `release:skip` or no `release:*` label are no-ops.
-- `.github/workflows/pr-checks.yml` — advisory convention checks on every PR to `main`. Verifies (a) exactly one `release:*` label, (b) `release:major|minor|patch` PRs add at least one new bullet under `## [Unreleased]`, (c) source PRs don't touch `VERSION`/`dist/nsa.css`/`sidebar.js`, and (d) release PRs touch only those four release files. Failures show as a red ✕ on the PR but do not block merge.
-- Four `release:*` labels on the repo: `release:major`, `release:minor`, `release:patch`, `release:skip`.
-
 ### Changed
-- Distribution is now GitHub Pages only. All jsDelivr references removed from `README.md`, `DISTRIBUTION.md`, `CLAUDE.md`, and `build.sh`.
-- `VERSION` format extended from `X.Y` to `X.Y.Z` semver to support patch releases. The release workflow normalizes the legacy `X.Y` value on first run (`1.0` is treated as `1.0.0`).
-- Release flow no longer relies on manual `git tag` pushes — tagging and release-asset publishing happen inside the workflow after the release PR merges.
+- `.github/workflows/release.yml` — collapsed from two-phase to **single-phase**. On every push to `main` the workflow rebuilds `dist/nsa.css` fresh, stages the full site, and deploys it to GitHub Pages via `actions/deploy-pages`. When the merging PR carried `release:major|minor|patch`, the workflow additionally creates an annotated `vX.Y.Z` tag (notes from the `[Unreleased]` block of `CHANGELOG.md`) and a GitHub Release with `dist/nsa.css` attached. Nothing is committed back to `main`; the org ruleset `nsa-protect-default-branch` is branch-scoped, so the tag push is unrestricted. A `workflow_dispatch` trigger with a `force_version` input is available for emergency releases.
+- `.github/workflows/pr-checks.yml` — dropped the file-scope gate (no more generated/managed files on `main` to protect). Kept the label-discipline and `[Unreleased]`-bullet gates.
+- `build.sh` — version is now read from `$NSA_VERSION` (set by the release workflow) or `git describe --tags --abbrev=0 --match 'v*'` for local dev, falling back to `"dev"`. The script no longer writes to `sidebar.js`.
+- `sidebar.js` — `NSA_DS_VERSION` is now a `__NSA_VERSION__` placeholder; the release workflow substitutes it into the deployed Pages copy only. Locally the sidebar shows `"dev"` via a runtime fallback so source diffs aren't churned.
+- GitHub Pages source switched from "Deploy from a branch (main /)" to "GitHub Actions".
+
+### Removed
+- `VERSION` file — superseded by `git describe`. The most recent `v*` tag is now the source of truth for the current version.
+- `dist/nsa.css` committed to `main` — the workflow now builds it fresh in the runner and ships it via the Pages artifact + GitHub Release attachment. `dist/` is gitignored.
+- Two-phase release PR flow. Source PRs no longer trigger an automated `release/v*` follow-up PR. The `CHANGELOG.md` `[Unreleased]` block is no longer auto-promoted under dated headings — humans curate it in normal source PRs when they want a tidy timeline.
 
 ## [1.0] — 2026-05-22
 
