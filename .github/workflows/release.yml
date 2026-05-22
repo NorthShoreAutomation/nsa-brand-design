@@ -54,7 +54,11 @@ jobs:
           FORCE: ${{ inputs.force_version }}
         run: |
           set -euo pipefail
-          if [ -n "${FORCE}" ]; then
+          if [ "${GITHUB_EVENT_NAME}" = "workflow_dispatch" ]; then
+            if [ -z "${FORCE}" ]; then
+              echo "::error::workflow_dispatch requires force_version. Leave releases to push events, or provide an explicit version such as 1.2.3."
+              exit 1
+            fi
             echo "level=force" >> "$GITHUB_OUTPUT"
             echo "Force version requested: ${FORCE}"
             exit 0
@@ -85,6 +89,7 @@ jobs:
           FORCE: ${{ inputs.force_version }}
         run: |
           set -euo pipefail
+          head_tag="$(git tag --points-at HEAD --list 'v*' --sort=-version:refname | head -n 1 || true)"
           last="$(git describe --tags --abbrev=0 --match 'v*' 2>/dev/null || echo v0.0.0)"
           last="${last#v}"
           # Normalize legacy X.Y → X.Y.0
@@ -96,15 +101,30 @@ jobs:
           IFS=. read -r major minor patch <<<"$last"
 
           released=false
+          tag_exists=false
           new=""
           case "$LEVEL" in
             force)
               new="$FORCE"
+              if [ "${head_tag}" = "v${new}" ]; then
+                tag_exists=true
+              fi
               released=true
               ;;
-            major) new="$((major+1)).0.0";              released=true ;;
-            minor) new="${major}.$((minor+1)).0";       released=true ;;
-            patch) new="${major}.${minor}.$((patch+1))"; released=true ;;
+            major|minor|patch)
+              if [ -n "${head_tag}" ]; then
+                new="${head_tag#v}"
+                tag_exists=true
+                echo "HEAD already has ${head_tag}; reusing it for an idempotent rerun."
+              else
+                case "$LEVEL" in
+                  major) new="$((major+1)).0.0" ;;
+                  minor) new="${major}.$((minor+1)).0" ;;
+                  patch) new="${major}.${minor}.$((patch+1))" ;;
+                esac
+              fi
+              released=true
+              ;;
             skip)  new="$last" ;;
           esac
 
@@ -112,6 +132,7 @@ jobs:
           echo "version=$new"       >> "$GITHUB_OUTPUT"
           echo "tag=v$new"          >> "$GITHUB_OUTPUT"
           echo "last=$last"         >> "$GITHUB_OUTPUT"
+          echo "tag_exists=$tag_exists" >> "$GITHUB_OUTPUT"
           echo "Last: v${last} → New: v${new} (released=${released})"
 
       - name: Extract [Unreleased] block from CHANGELOG
@@ -156,7 +177,7 @@ jobs:
           path: _site
 
       - name: Create annotated tag
-        if: steps.version.outputs.released == 'true'
+        if: steps.version.outputs.released == 'true' && steps.version.outputs.tag_exists != 'true'
         env:
           TAG: ${{ steps.version.outputs.tag }}
         run: |
@@ -176,6 +197,10 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ steps.version.outputs.tag }}
         run: |
+          if gh release view "${TAG}" >/dev/null 2>&1; then
+            echo "GitHub Release ${TAG} already exists; leaving it unchanged."
+            exit 0
+          fi
           gh release create "${TAG}" dist/nsa.css \
             --title "${TAG}" \
             --notes-file /tmp/release_notes.md
