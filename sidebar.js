@@ -1,6 +1,6 @@
 // Shared sidebar for NSA Design System
 // Version label is rewritten by build.sh from the VERSION file at the repo root.
-const NSA_DS_VERSION = 'v1.0';
+const NSA_DS_VERSION = 'v1.1.0';
 document.addEventListener('DOMContentLoaded', () => {
   const side = document.querySelector('[data-ds-side]');
   if (!side) return;
