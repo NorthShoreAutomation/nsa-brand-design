@@ -1,20 +1,28 @@
 #!/usr/bin/env bash
 # Regenerate dist/nsa.css from tokens.css + components.css.
-# Also propagates VERSION to the sidebar.js version label.
 #
-# Run before tagging a release. No dependencies beyond bash + sed.
+# Version resolution (in order):
+#   1. $NSA_VERSION env var (used by .github/workflows/release.yml)
+#   2. Most recent v* git tag (local dev with a real tag)
+#   3. "dev" (no tags yet, e.g. fresh clone)
+#
+# dist/nsa.css is gitignored — the release workflow builds it fresh in
+# the runner for Pages + Release artifacts. Run this locally only when
+# you want to preview the concatenated output.
 set -euo pipefail
 
 cd "$(dirname "$0")"
 
-VERSION="$(cat VERSION)"
+if [ -n "${NSA_VERSION:-}" ]; then
+  VERSION="$NSA_VERSION"
+elif tag="$(git describe --tags --abbrev=0 --match 'v*' 2>/dev/null)"; then
+  VERSION="${tag#v}"
+else
+  VERSION="dev"
+fi
 
-# 1. Build dist/nsa.css
-#    - New banner with version
-#    - Google Fonts @import (IBM Plex)
-#    - tokens.css with Microgramma paths rewritten from `fonts/` to `../fonts/`
-#      (resolves against the sibling fonts/ directory under whichever host serves the CSS)
-#    - components.css unmodified
+mkdir -p dist
+
 {
   cat <<EOF
 /* =========================================================
@@ -37,8 +45,4 @@ EOF
   cat components.css
 } > dist/nsa.css
 
-# 2. Sync sidebar.js version label
-sed -i.bak "s|^const NSA_DS_VERSION = '.*';|const NSA_DS_VERSION = 'v${VERSION}';|" sidebar.js
-rm -f sidebar.js.bak
-
-echo "Built dist/nsa.css and synced sidebar.js to v${VERSION}"
+echo "Built dist/nsa.css at v${VERSION}"
