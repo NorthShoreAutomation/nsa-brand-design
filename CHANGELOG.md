@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - `.github/workflows/release.yml` — two-phase auto-release pipeline that respects the org-level branch protection on `main`. **Phase 1** fires when a labeled source PR merges to `main`: reads the `release:major|minor|patch` label, bumps `VERSION`, rewrites `CHANGELOG.md` (moves `[Unreleased]` under a new dated version heading), runs `build.sh`, commits to a `release/vX.Y.Z` branch, and opens a release PR back to `main`. **Phase 2** fires when any push to `main` changes the `VERSION` file (i.e. the release PR is merged): tags `vX.Y.Z` and creates a GitHub Release with `dist/nsa.css` attached. PRs with `release:skip` or no `release:*` label are no-ops.
+- `.github/workflows/pr-checks.yml` — advisory convention checks on every PR to `main`. Verifies (a) exactly one `release:*` label, (b) `release:major|minor|patch` PRs add at least one new bullet under `## [Unreleased]`, (c) source PRs don't touch `VERSION`/`dist/nsa.css`/`sidebar.js`, and (d) release PRs touch only those four release files. Failures show as a red ✕ on the PR but do not block merge.
 - Four `release:*` labels on the repo: `release:major`, `release:minor`, `release:patch`, `release:skip`.
 
 ### Changed

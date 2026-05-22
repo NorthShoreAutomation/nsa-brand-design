@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 The **NSA (North Shore Automation) design system**, distributed as a single CSS file via GitHub Pages. There is no build tool, framework, or package manager — it's static HTML + CSS + one small JS file, designed to be served as-is.
 
-Consumers do **not** clone this repo; they load `https://northshoreautomation.github.io/nsa-brand-design/dist/nsa.css` and follow the rules in `CLAUDE.md.snippet.md`. Releases are cut automatically by `.github/workflows/release.yml` when a labeled PR is merged to `main` — the workflow bumps `VERSION`, updates `CHANGELOG.md`, tags `vX.Y.Z`, and attaches `dist/nsa.css` to a GitHub Release as a frozen, archival snapshot.
+Consumers do **not** clone this repo; they load `https://northshoreautomation.github.io/nsa-brand-design/dist/nsa.css` and follow the rules in `CLAUDE.md.snippet.md`. Releases are cut by a two-phase pipeline in `.github/workflows/release.yml` driven by `release:*` labels on PRs to `main`: a labeled source-PR merge opens a release PR; merging that release PR tags `vX.Y.Z` and attaches `dist/nsa.css` to a GitHub Release as a frozen, archival snapshot. PR conventions are advisory-gated by `.github/workflows/pr-checks.yml`.
 
 ## Architecture
 
@@ -50,6 +50,25 @@ Repo must stay public for Pages.
 **Adding a new reference page.** Create `site/<name>.html`, link `../tokens.css` + `../components.css` + IBM Plex preconnect/`<link>`, include `<aside class="ds-side" data-ds-side data-current="<key>"></aside>` and `<script src="../sidebar.js"></script>`. Then add a matching `<a data-k="<key>" href="<name>.html">` entry inside `sidebar.js`.
 
 **Adding a new product theme.** Add color tokens to the `Product accents` section of `tokens.css`, add a `[data-product="<name>"]` block at the bottom, create `product-<name>.html`, and add it to `sidebar.js`.
+
+## PR conventions
+
+Every PR to `main` is checked against these conventions by `.github/workflows/pr-checks.yml`. The checks are **advisory** — a failure shows as a red ✕ in the PR's check list but does not block merge. Treat the ✕ as a prompt to look before clicking merge.
+
+1. **Label discipline.** Exactly one `release:*` label per PR:
+   - `release:major` — breaking change (X+1.0.0)
+   - `release:minor` — new feature, backward-compatible (X.Y+1.0)
+   - `release:patch` — fix only (X.Y.Z+1)
+   - `release:skip` — merge with no release cut
+   Zero labels or multiple `release:*` labels fail the check.
+
+2. **CHANGELOG enforcement.** PRs labeled `release:major`, `release:minor`, or `release:patch` must add at least one new bullet under `## [Unreleased]` in `CHANGELOG.md` vs. `origin/main`. `release:skip` PRs and release PRs themselves (head branch `release/v*`) are exempt.
+
+3. **File scope.**
+   - **Source PRs** (head branch ≠ `release/v*`) **may not** modify `VERSION`, `dist/nsa.css`, or `sidebar.js`. Those are generated/managed by the release workflow.
+   - **Release PRs** (head branch = `release/v*`) **may only** modify `VERSION`, `CHANGELOG.md`, `dist/nsa.css`, `sidebar.js`. Catches tampering between the workflow's automated open and the maintainer's merge.
+
+If a check fails, fix the underlying convention rather than waving it through — the rules exist because skipping them is what creates broken-looking releases.
 
 ## Rules that constrain edits
 

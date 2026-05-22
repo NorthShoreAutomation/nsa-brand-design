@@ -1,0 +1,128 @@
+name: pr-checks
+
+# Advisory convention checks on every PR to main. Failures show as a
+# red check on the PR but do NOT block merge (no required-status-check
+# entry on the org ruleset). Maintainers can override and merge anyway;
+# the red X is a deliberate prompt to look.
+#
+# Three gates, each independent:
+#
+#   1. Label discipline. Exactly one of release:major | release:minor |
+#      release:patch | release:skip must be present.
+#
+#   2. CHANGELOG enforcement. If the PR is labeled release:major|minor|
+#      patch, the [Unreleased] section of CHANGELOG.md must gain at
+#      least one new bullet vs. origin/main. release:skip and release
+#      PRs themselves are exempt.
+#
+#   3. File scope.
+#        - Source PRs (head branch ≠ release/v*) may not modify
+#          VERSION, dist/nsa.css, or sidebar.js (generated/managed
+#          files — the release workflow regenerates them on merge).
+#        - Release PRs (head branch = release/v*) may ONLY modify
+#          VERSION, CHANGELOG.md, dist/nsa.css, sidebar.js.
+
+on:
+  pull_request:
+    types: [opened, edited, labeled, unlabeled, synchronize, reopened]
+    branches: [main]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  conventions:
+    runs-on: ubuntu-latest
+    env:
+      HEAD_REF: ${{ github.event.pull_request.head.ref }}
+      BASE_REF: ${{ github.event.pull_request.base.ref }}
+      LABELS:   ${{ toJson(github.event.pull_request.labels.*.name) }}
+    steps:
+      - name: Checkout PR head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: PR label discipline
+        if: ${{ !cancelled() }}
+        run: |
+          set -u
+          count=0
+          for l in major minor patch skip; do
+            if echo "$LABELS" | grep -q "\"release:$l\""; then
+              count=$((count+1))
+            fi
+          done
+          if [ "$count" -eq 0 ]; then
+            echo "::error::PR must carry exactly one release:* label (release:major | release:minor | release:patch | release:skip). See CLAUDE.md → PR conventions."
+            exit 1
+          fi
+          if [ "$count" -gt 1 ]; then
+            echo "::error::PR carries multiple release:* labels; exactly one is required."
+            exit 1
+          fi
+          echo "Label OK."
+
+      - name: CHANGELOG [Unreleased] must add a new bullet
+        if: ${{ !cancelled() && !startsWith(env.HEAD_REF, 'release/v') }}
+        run: |
+          set -u
+          # Skip when the label is release:skip or absent — the label-
+          # discipline gate already reports the absent case.
+          if ! echo "$LABELS" | grep -qE '"release:(major|minor|patch)"'; then
+            echo "Skipping (label is release:skip or absent)."
+            exit 0
+          fi
+          if [ ! -f CHANGELOG.md ]; then
+            echo "::error::CHANGELOG.md missing in PR head."
+            exit 1
+          fi
+          extract() {
+            awk '
+              /^## \[Unreleased\]/ { flag=1; next }
+              flag && /^## \[/     { flag=0 }
+              flag                  { print }
+            ' "$1"
+          }
+          git show "origin/${BASE_REF}:CHANGELOG.md" > /tmp/cl-base.md 2>/dev/null || : > /tmp/cl-base.md
+          extract /tmp/cl-base.md > /tmp/u-base.md
+          extract CHANGELOG.md    > /tmp/u-head.md
+          base_bullets=$(grep -cE '^- ' /tmp/u-base.md 2>/dev/null || true)
+          head_bullets=$(grep -cE '^- ' /tmp/u-head.md 2>/dev/null || true)
+          : "${base_bullets:=0}"
+          : "${head_bullets:=0}"
+          if [ "$head_bullets" -le "$base_bullets" ]; then
+            echo "::error file=CHANGELOG.md::release:major|minor|patch PRs must add at least one bullet under '## [Unreleased]'. Bullets in [Unreleased] — base: ${base_bullets}, head: ${head_bullets}."
+            exit 1
+          fi
+          echo "CHANGELOG OK: [Unreleased] bullets ${base_bullets} → ${head_bullets}."
+
+      - name: File scope — source PR (head branch ≠ release/v*)
+        if: ${{ !cancelled() && !startsWith(env.HEAD_REF, 'release/v') }}
+        run: |
+          set -u
+          forbidden=$(git diff --name-only "origin/${BASE_REF}...HEAD" | grep -E '^(VERSION|dist/nsa\.css|sidebar\.js)$' || true)
+          if [ -n "$forbidden" ]; then
+            echo "::error::Source PRs must not modify generated/managed files. The release workflow regenerates these on merge."
+            while IFS= read -r f; do
+              echo "::error file=$f::Generated file modified in source PR"
+            done <<< "$forbidden"
+            exit 1
+          fi
+          echo "File scope OK (source PR did not touch generated files)."
+
+      - name: File scope — release PR (head branch = release/v*)
+        if: ${{ !cancelled() && startsWith(env.HEAD_REF, 'release/v') }}
+        run: |
+          set -u
+          unexpected=$(git diff --name-only "origin/${BASE_REF}...HEAD" | grep -vE '^(VERSION|CHANGELOG\.md|dist/nsa\.css|sidebar\.js)$' || true)
+          if [ -n "$unexpected" ]; then
+            echo "::error::Release PRs must touch ONLY: VERSION, CHANGELOG.md, dist/nsa.css, sidebar.js."
+            while IFS= read -r f; do
+              echo "::error file=$f::Unexpected file modified in release PR"
+            done <<< "$unexpected"
+            exit 1
+          fi
+          echo "File scope OK (release PR touched only the four release files)."
