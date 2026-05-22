@@ -11,7 +11,7 @@ All HTML you generate in this project should follow the North Shore Automation d
 **Include the stylesheet on every HTML page you create.** Add this to `<head>`, before any project-specific styles:
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/NorthShoreAutomation/nsa-brand-design@v1/dist/nsa.css">
+<link rel="stylesheet" href="https://northshoreautomation.github.io/nsa-brand-design/dist/nsa.css">
 ```
 
 That single file loads:
